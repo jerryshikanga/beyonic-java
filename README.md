@@ -9,6 +9,8 @@ package com.beyonic;
 
 import com.beyonic.exceptions.BeyonicException;
 import com.beyonic.models.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -33,13 +35,13 @@ public class Samples {
         System.out.println(response);
 
         // LIST
-        response = new CollectionRequest().list();
+        response = new CollectionRequest().list(null, null);
         System.out.println(response);
 
         // Filter
         HashMap<String, String> crFilter = new HashMap<>();
         crFilter.put("amount", "155");
-        response = new CollectionRequest().filter(crFilter);
+        response = new CollectionRequest().filter(crFilter, null);
         System.out.println(response);
 
         // GET
@@ -48,14 +50,14 @@ public class Samples {
 
         // Collections
         // List
-        response = new Collection().list();
+        response = new Collection().list(null, null);
         System.out.println(response);
 
         // Filter
         HashMap<String, String> filterValues = new HashMap<>();
         filterValues.put("currency", "KES");
         filterValues.put("amount", "1000");
-        response = new Collection().filter(filterValues);
+        response = new Collection().filter(filterValues, null);
         System.out.println(response);
 
         // Get
@@ -76,15 +78,39 @@ public class Samples {
         response = new Payment().create(paymentCreate, null);
         System.out.println(response);
 
+        // Payment with duplicate check
+        response = new Payment().create(paymentCreate, null, "duplicate.check.key");
+        System.out.println(response);
+
+        // Multiple payments
+        JSONObject recipient1 = new JSONObject();
+        recipient1.put("amount", 15);
+        recipient1.put("phonenumber", "+80000000001");
+        JSONObject recipient2 = new JSONObject();
+        recipient2.put("amount", 25);
+        recipient2.put("phonenumber", "80000000005");
+        recipient2.put("description", "Cool guy benefits");
+        JSONArray recipientsArray = new JSONArray();
+        recipientsArray.put(recipient1);
+        recipientsArray.put(recipient2);
+
+        HashMap<String, Object> mutiplePayments = new HashMap<>();
+        mutiplePayments.put("recioient_data", recipientsArray.toString());
+        mutiplePayments.put("currency", "BXC");
+        mutiplePayments.put("description", "Per diem payment");
+        mutiplePayments.put("payment_type", "airtime");
+        response = new Payment().create(mutiplePayments, null);
+        System.out.println(response);
+
         // List
-        response = new Payment().list();
+        response = new Payment().list(null, null);
         System.out.println(response);
 
         // filter
         HashMap<String, String> paymentFilters = new HashMap<>();
         paymentFilters.put("currency", "KES");
         paymentFilters.put("amount", "1000");
-        response = new Payment().filter(paymentFilters);
+        response = new Payment().filter(paymentFilters, null);
         System.out.println(response);
 
         // Get
@@ -94,7 +120,7 @@ public class Samples {
 
         //Currencies
         // List
-        response = new Currency().list();
+        response = new Currency().list(null, null);
         System.out.println(response);
 
 
@@ -105,7 +131,7 @@ public class Samples {
 
         //Networks
         // List
-        response = new Network().list();
+        response = new Network().list(null, null);
         System.out.println(response);
 
 
@@ -116,7 +142,7 @@ public class Samples {
 
         //Accounts
         // List
-        response = new Account().list();
+        response = new Account().list(null, null);
         System.out.println(response);
 
 
@@ -127,13 +153,13 @@ public class Samples {
         // Filter
         HashMap<String, String> accountFilter = new HashMap<>();
         accountFilter.put("currrency", "BXC");
-        response = new Account().filter(accountFilter);
+        response = new Account().filter(accountFilter, null);
         System.out.println(response);
 
 
         //Transactions
         // List
-        response = new Transaction().list();
+        response = new Transaction().list(null, null);
         System.out.println(response);
 
 
@@ -145,7 +171,7 @@ public class Samples {
         HashMap<String, String> transactionFilter = new HashMap<>();
         transactionFilter.put("currrency", "BXC");
         transactionFilter.put("account", "123");
-        response = new Transaction().filter(transactionFilter);
+        response = new Transaction().filter(transactionFilter, null);
         System.out.println(response);
 
 
@@ -160,13 +186,13 @@ public class Samples {
         System.out.println(response);
 
         // LIST
-        response = new Contact().list();
+        response = new Contact().list(null, null);
         System.out.println(response);
 
         // Filter
         HashMap<String, String> contactFilter = new HashMap<>();
         contactFilter.put("created_after", "2017-01-01 00:00");
-        response = new Contact().filter(contactFilter);
+        response = new Contact().filter(contactFilter, null);
         System.out.println(response);
 
         // GET
