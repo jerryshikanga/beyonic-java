@@ -95,7 +95,7 @@ public class Samples {
         recipientsArray.put(recipient2);
 
         HashMap<String, Object> mutiplePayments = new HashMap<>();
-        mutiplePayments.put("recioient_data", recipientsArray.toString());
+        mutiplePayments.put("recipient_data", recipientsArray.toString());
         mutiplePayments.put("currency", "BXC");
         mutiplePayments.put("description", "Per diem payment");
         mutiplePayments.put("payment_type", "airtime");
