@@ -32,14 +32,20 @@ public class BaseModel {
         this.API_ENDPOINT = apiEndpoint;
     }
 
-    public String list() throws BeyonicException {
+    public String list(HashMap<String, String> parameters, HashMap<String, String> headers) throws BeyonicException {
         String requestURL = API_BASE_URL + API_ENDPOINT;
-        return makeRequest(requestURL, "GET", null, null, null);
+        return makeRequest(requestURL, "GET", null, parameters, headers);
     }
 
     public String create(@NotNull HashMap<String, Object> payload, HashMap<String, String> headers) throws BeyonicException {
         String requestURL = API_BASE_URL + API_ENDPOINT;
-        return makeRequest(requestURL, "POST", payload, null, null);
+        return makeRequest(requestURL, "POST", payload, null, headers);
+    }
+
+    public String create(@NotNull HashMap<String, Object> payload, HashMap<String, String> headers, String duplicateCheckKey) throws BeyonicException {
+        String requestURL = API_BASE_URL + API_ENDPOINT;
+        headers.put("Duplicate-Check-Key", duplicateCheckKey);
+        return makeRequest(requestURL, "POST", payload, null, headers);
     }
 
     public String get(Integer id) throws BeyonicException {
@@ -47,13 +53,9 @@ public class BaseModel {
         return makeRequest(requestURL, "GET", null, null, null);
     }
 
-    public String filter(HashMap<String, String> parameters) throws BeyonicException {
+    public String filter(HashMap<String, String> parameters, HashMap<String, String> headers) throws BeyonicException {
         String requestURL = API_BASE_URL + API_ENDPOINT;
-        return makeRequest(requestURL, "GET", null, parameters, null);
-    }
-
-    public String update(HashMap<String, Object> parameters){
-        return null;
+        return makeRequest(requestURL, "GET", null, parameters, headers);
     }
 
     private String getRequestBody(HashMap<String, Object> hashMap){
@@ -69,9 +71,6 @@ public class BaseModel {
 
     private String makeRequest(@NotNull String requestURL, @NotNull String requestMethod, HashMap<String, Object> payload, HashMap<String, String> parameters, HashMap<String, String> headers) throws BeyonicException {
         OkHttpClient.Builder okhttpBuilder = new OkHttpClient.Builder();
-//        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-//        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        okhttpBuilder.addInterceptor(loggingInterceptor);
         OkHttpClient okHttpClient = okhttpBuilder.build();
 
         // Add headers if supplied
